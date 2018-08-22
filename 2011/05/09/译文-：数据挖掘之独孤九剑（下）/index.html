@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据挖掘,业务,九定律,套路," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="【从网易博客迁移，本文写于2012年5月,有不少网站修改标题之后，上下两篇合并转载的，有的没注明来源，更没标注原作者，我这里只是生硬的翻译，很多词不达意的地方】 by  Tom Khabaza原文在此： 1 , 2 , 3 。 [译文]（下半部分）： 第五， 模式律 （ 大卫律 ）：数据中总含有模式。 这条规律最早由 David Watkins 提出。  我们可能预料到一些数据挖掘项目会失败，因为">
+<meta name="keywords" content="数据挖掘,业务,九定律,套路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译文]：数据挖掘之独孤九剑（下）">
+<meta property="og:url" content="http://yoursite.com/2011/05/09/译文-：数据挖掘之独孤九剑（下）/index.html">
+<meta property="og:site_name" content="平行宇宙">
+<meta property="og:description" content="【从网易博客迁移，本文写于2012年5月,有不少网站修改标题之后，上下两篇合并转载的，有的没注明来源，更没标注原作者，我这里只是生硬的翻译，很多词不达意的地方】 by  Tom Khabaza原文在此： 1 , 2 , 3 。 [译文]（下半部分）： 第五， 模式律 （ 大卫律 ）：数据中总含有模式。 这条规律最早由 David Watkins 提出。  我们可能预料到一些数据挖掘项目会失败，因为">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-22T08:54:36.771Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译文]：数据挖掘之独孤九剑（下）">
+<meta name="twitter:description" content="【从网易博客迁移，本文写于2012年5月,有不少网站修改标题之后，上下两篇合并转载的，有的没注明来源，更没标注原作者，我这里只是生硬的翻译，很多词不达意的地方】 by  Tom Khabaza原文在此： 1 , 2 , 3 。 [译文]（下半部分）： 第五， 模式律 （ 大卫律 ）：数据中总含有模式。 这条规律最早由 David Watkins 提出。  我们可能预料到一些数据挖掘项目会失败，因为">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2011/05/09/译文-：数据挖掘之独孤九剑（下）/"/>
+
+
+
+
+
+  <title>[译文]：数据挖掘之独孤九剑（下） | 平行宇宙</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d5636d88fa0b83a8216fdd24623a6cf4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">平行宇宙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">网络连接你我,数据衡量现实,计算照亮生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2011/05/09/译文-：数据挖掘之独孤九剑（下）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="平行宇宙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://tvax3.sinaimg.cn/crop.2.0.172.172.180/629f6675ly8fuhfq9ayw8j204z04staf.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="平行宇宙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">[译文]：数据挖掘之独孤九剑（下）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2011-05-09T20:39:00+08:00">
+                2011-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【从网易博客迁移，本文写于2012年5月,有不少网站修改标题之后，上下两篇合并转载的，有的没注明来源，更没标注原作者，我这里只是生硬的翻译，很多词不达意的地方】</p>
+<h4 id="by-Tom-Khabaza"><a href="#by-Tom-Khabaza" class="headerlink" title="by  Tom Khabaza"></a>by  <a href="http://khabaza.codimension.net/index.htm" target="_blank" rel="noopener">Tom Khabaza</a></h4><p>原文在此： <a href="http://khabaza.codimension.net/index_files/9laws.htm" target="_blank" rel="noopener">1</a> , <a href="http://khabaza.codimension.net/index_files/Page346.htm" target="_blank" rel="noopener">2</a> , <a href="http://khabaza.codimension.net/index_files/Page347.htm" target="_blank" rel="noopener">3</a> 。</p>
+<p><strong>[译文]（下半部分）：</strong></p>
+<p><strong>第五，</strong> <strong><strong>模式律</strong></strong> <strong>（</strong> <strong>大卫律</strong> <strong>）：数据中总含有模式。</strong></p>
+<p>这条规律最早由 David Watkins 提出。  我们可能预料到一些数据挖掘项目会失败，因为解决业务问题的模式并不存在于数据中，但是这与数据挖掘者的实践经验并不相关。</p>
+<p>前文的阐述已经提到，这是因为：在一个与业务相关的数据集中总会发现一些有趣的东西，以至于即使一些期望的模式不能被发现，但其他的一些有用的东西可能会被发现（这与数据挖掘者的实践经验是相关的）；除非业务专家期望的模式存在，否则数据挖掘项目不会进行，这不应感到奇怪，因为业务专家通常是对的。</p>
+<p>然而， Watkins 提出一个更简单更直接的观点：“数据中总含有模式。”这与数据挖掘者的经验比前面的阐述更一致。这个观点后来经过 Watkins 修正，基于客户关系的数据挖掘项目，总是存在着这样的模式即客户未来的行为总是和先前的行为相关，显然这些模式是有利可图的（ Watkins 的客户关系管理定律）。  但是，数据挖掘者的经验不仅仅局限于客户关系管理问题，任何数据挖掘问题都会存在模式（ Watkins 的通用律）。</p>
+<p>Watkins 的通用律解释如下：</p>
+<ul>
+<li>数据挖掘项目的业务目标定义了兴趣范围（定义域），数据挖掘目标反映了这一点；</li>
+<li>与业务目标相关的数据及其相应的数据挖掘目标是在这个定义域上的数据挖掘过程产生的；</li>
+<li>这些过程受规则限制，而这些过程产生的数据反映了这些规则；</li>
+<li>在这些过程中，数据挖掘的目的是通过模式发现技术（数据挖掘算法）和可以解释这个算法结果的业务知识相结合的方法来揭示这个定义域上的规则；</li>
+<li>数据挖掘需要在这个域上生成相关数据，这些数据含有的模式不可避免地受到这些规则的限制。</li>
+</ul>
+<p>总结这一观点：数据中总存在模式，因为在这过程中不可避免产生数据这样的副产品。为了发掘模式，过程从（你已经知道它） —-- 业务知识开始。</p>
+<p>利用业务知识发现模式也是一个反复的过程；这些模式也对业务知识有贡献，同时业务知识是解释模式的主要因素。在这种反复的过程中，数据挖掘算法简单地连接了业务知识和隐藏的模式。</p>
+<p>如果这个解释是正确的，那么大卫律是完全通用的。除非没有相关的数据的保证，否则在每个定义域的每一个数据挖掘问题总是存在模式的。</p>
+<p> <strong>第六，洞察律：数据挖掘增大对业务的认知。</strong></p>
+<p> 数据挖掘是如何产生洞察力的？这个定律接近了数据挖掘的核心：为什么数据挖掘必须是一个业务过程而不是一个技术过程。业务问题是由人而非算法解决的。数据挖掘者和业务专家从问题中找到解决方案，即从问题的定义域上达到业务目标需要的模式。数据挖掘完全或部分有助于这个认知过程。数据挖掘算法揭示的模式通常不是人类以正常的方式所能认识到的。综合这些算法和人类正常的感知的数据挖掘过程在本质上是敏捷的。在数据挖掘过程中，问题解决者解释数据挖掘算法产生的结果，并统一到业务理解上，因此这是一个业务过程。</p>
+<p> 这类似于“智能放大器”的概念，在早期的人工智能的领域， AI 的第一个实际成果不是智能机器，而是被称为“智能放大器”的工具，它能够协助人类使用者提高获取有效信息的能力。数据挖掘提供一个类似的“智能放大器”，帮助业务专家解决他们不能单独完成的业务问题。</p>
+<p>总之，数据挖掘算法提供一种超越人类以正常方式探索模式的能力，数据挖掘过程允许数据挖掘者和业务专家将这种能力融合在他们的各自的问题的中和业务过程中。</p>
+<p> <strong>第七，预测律：预测提高了信息泛化能力。</strong></p>
+<p>“预测”已经成为数据挖掘模型可以做什么的可接受的描述，即我们常说的“预测模型”和“预测分析”。这是因为许多流行的数据挖掘模型经常使用“预测最可能的结果”（或者解释可能的结果如何有可能）。这种方法是分类和回归模型的典型应用。</p>
+<p>但是，其他类型的数据挖掘模型，比如聚类和关联模型也有“预测”的特征。这是一个含义比较模糊的术语。一个聚类模型被描述为“预测”一个个体属于哪个群体，一个关联模型可能被描述为基于已知基本属性“预测”一个或更多属性。</p>
+<p>同样我们也可以分析“预测”这个术语在不同的主题中的应用：一个分类模型可能被说成可以预测客户行为 —- 更加确切的说它可以预测以某种确定行为的目标客户，即使不是所有的目标个体的行为都符合“预测”的结果。一个诈骗检测模型可能被说成可以预测个别交易是否具有高风险性，即使不是所有的预测的交易都有欺诈行为。</p>
+<p>“预测”这个术语广泛的使用导致了所谓的“预测分析”被作为数据挖掘的总称，并且在业务解决方案中得到了广泛的应用。但是我们应该意识到这不是日常所说的“预测”，我们不能期望预测一个特殊个体的行为或者一个特别的欺诈调查结果。</p>
+<p>那么，在这个意义下的“预测”是什么？分类、回归、聚类和  关联算法以及他们集成模型有什么共性呢？答案在于“评分”，这是预测模型应用到一个新样例的方式。模型产生一个预估值或评分，这是这个样例的新信息的一部分；在概括和归纳的基础上，这个样例的可利用信息得到了提高，模式被算法发现和模型具体化。值得注意的是这个新信息不是在“给定”意义上的“数据”，它仅有统计学意义。</p>
+<p><strong>第八，价值律：数据挖掘的结果的价值不取决于模型的稳定性或预测的准确性。</strong></p>
+<p>准确性和稳定性是预测模型常用的两个度量。准确性是指正确的预测结果所占的比例；稳定性是指当创建模型的数据改变时，用于同一口径的预测数据，其预测结果变化有多大（或多小）。鉴于数据挖掘中预测概念的核心角色，一个预测模型的准确性和稳定性常被认为决定了其结果的价值的大小，实际上并非如此。</p>
+<p>体现预测模型价值的有两种方式：一种是用模型的预测结果来改善或影响行为，另一种是模型能够传递导致改变策略的见解（或新知识）。</p>
+<p> 对于后者，传递出的任何新知识的价值和准确性的联系并不那么紧密；一些模型的预测能力可能有必要使我们相信发现的模式是真实的。然而，一个难以理解的复杂的或者完全不透明的模型的预测结果具有高准确性，但传递的知识也不是那么有见地；然而，一个简单的低准确度的模型可能传递出更有用的见解 <strong>。</strong></p>
+<p> 准确性和价值之间的分离在改善行为的情况下并不明显，然而一个突出问题是“预测模型是为了正确的事，还是为了正确的原因 ? ”换句话说，一个模型的价值和它的预测准确度一样，都源自它的业务问题。例如，客户流失模型可能需要高的预测准确度，否则对于业务上的指导不会那么有效。相反的是一个准确度高的客户流失模型可能提供有效的指导，保留住老客户，但也仅仅是最少利润客户群体的一部分。如果不适合业务问题，高准确度并不能提高模型的价值。</p>
+<p>模型稳定性同样如此，虽然稳定性是预测模型的有趣的度量，稳定性不能代替模型提供业务理解的能力或解决业务问题，其它技术手段也是如此。</p>
+<p>总之，预测模型的价值不是由技术指标决定的。数据挖掘者应该在模型不损害业务理解和适应业务问题的情况下关注预测准确度、模型稳定性以及其它的技术度量。</p>
+<p> <strong>第九，变化律：所有的模式因业务变化而变化。</strong></p>
+<p>数据挖掘发现的模式不是永远不变的。数据挖掘的许多应用是众所周知的，但是这个性质的普遍性没有得到广泛的重视。</p>
+<p>数据挖掘在市场营销和 CRM 方面的应用很容易理解，客户行为模式随着时间的变化而变化。行为的变化、市场的变化、竞争的变化以及整个经济形势的变化，预测模型会因这些变化而过时，当他们不能准确预测时，应当定期更新。</p>
+<p>数据挖掘在欺诈模型和风险模型的应用中同样如此，随着环境的变化欺诈行为也在变化，因为罪犯要改变行为以保持领先于反欺诈。欺诈检测的应用必须设计为就像处理旧的、熟悉的欺诈行为一样能够处理新的、未知类型的欺诈行为。</p>
+<p>某些种类的数据挖掘可能被认为发现的模式不会随时间而变化，比如数据挖掘在科学上的应用，我们有没有发现不变的普遍的规律？也许令人惊奇的是，答案是即使是这些模式也期望得到改变。理由是这些模式并不是简单的存在于这个世界上的规则，而是数据的反应 —- 这些规则可能在某些领域确实是静态的。</p>
+<p>然而，数据挖掘发现的模式是认知过程的一部分，是数据挖掘在数据描述的世界与观测者或业务专家的认知之间建立的一个动态过程。因为我们的认知在持续发展和增长，所以我们也期望模式也会变化。明天的数据表面上看起来相似，但是它可能已经集合了不同的模式、（可能巧妙地）不同的目的、不同的语义；分析过程因受业务知识驱动，所以会随着业务知识的变化而变化。基于这些原因，模式会有所不同。</p>
+<p>总之，所有的模式都会变化，因为他们不仅反映了一个变化的世界，也反映了我们变化的认知。</p>
+<p><strong>后记：</strong></p>
+<p>这九条定律是关于数据挖掘的简单的真知。这九条定律的大部分已为数据挖掘者熟知，但仍有一些不熟悉（例如，第五、第六、第七）。大多数新观点的解释都和这九条定律有关，它试图解释众所周知的数据挖掘过程中的背后的原因。</p>
+<p>我们为什么何必在意数据挖掘过程所采用的形式呢？除了知识和理解这些简单的诉求，有实实在在的理由去探讨这些问题。</p>
+<p>数据挖掘过程以现在的形式存在是因为技术的发展 —- 机器学习算法的普及以及综合其它技术集成这些算法的平台的发展，使得商业用户易于接受。我们是否应该期望因技术的改变而改变数据挖掘过程？最终它会改变，但是如果我们理解数据挖掘过程形成的原因，然后我们可以辨别技术可以改变的和不能改变的。</p>
+<p>一些技术的发展在预测分析领域具有革命性的作用，例如数据预处理的自动化、模型的重建以及在部署的框架里通过预测模型集成业务规则。数据挖掘的九条定律及其解释说明：技术的发展不会改变数据挖掘过程的本质。这九条定律以及这些思想的进一步发展，除了有对数据挖掘者的教育价值之外，应该被用来判别未来任何数据挖掘过程革命性变化的诉求。</p>
+<p>我要感谢_ <em>Chris Thornton</em> _和_ <em>David Watkins</em> <em>，他们的见解启发了这项工作，也同样感谢在</em> <em>LinkedIn</em> <em>“数据挖掘九规律”讨论组有做出贡献的人，他们提出了宝贵的意见。</em></p>
+<p>（完）</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据挖掘/" rel="tag"># 数据挖掘</a>
+          
+            <a href="/tags/业务/" rel="tag"># 业务</a>
+          
+            <a href="/tags/九定律/" rel="tag"># 九定律</a>
+          
+            <a href="/tags/套路/" rel="tag"># 套路</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2011/05/04/译文-：数据挖掘之独孤九剑（上）/" rel="next" title="[译文]：数据挖掘之独孤九剑（上）">
+                <i class="fa fa-chevron-left"></i> [译文]：数据挖掘之独孤九剑（上）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2012/08/25/初识OpenCV/" rel="prev" title="初识OpenCV">
+                初识OpenCV <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://tvax3.sinaimg.cn/crop.2.0.172.172.180/629f6675ly8fuhfq9ayw8j204z04staf.jpg"
+                alt="平行宇宙" />
+            
+              <p class="site-author-name" itemprop="name">平行宇宙</p>
+              <p class="site-description motion-element" itemprop="description">执着的信念,无妄的追求,理性的思索</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/qxde01" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/qxde01" target="_blank" title="weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#by-Tom-Khabaza"><span class="nav-number">1.</span> <span class="nav-text">by  Tom Khabaza</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">平行宇宙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
