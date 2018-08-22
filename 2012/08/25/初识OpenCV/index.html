@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2012/08/25/初识OpenCV/569142402926641021.jpg">
 <meta property="og:image" content="http://yoursite.com/2012/08/25/初识OpenCV/2589851260732541227.jpg">
-<meta property="og:updated_time" content="2018-08-22T09:51:01.041Z">
+<meta property="og:updated_time" content="2018-08-22T10:38:05.907Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="初识OpenCV">
 <meta name="twitter:description" content="【从网易博客迁移，本文写于2012年8月】 最近开始接触 OpenCV(Open Source Computer Vision Library) ，OpenCV对于图像处理已经十分强大，对于一些常见的应用仅用短短几行代码即可实现。官方释放的Python语言接口有两个cv2.cv和cv2，cv2加载的图像数据类型是Numpy类型，可以直接用Numpy处理，而cv2.cv的数据类型是OpenCV类型的">
@@ -306,6 +306,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CV/" itemprop="url" rel="index">
+                    <span itemprop="name">CV</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -334,8 +356,7 @@
 
       
         <p>【从网易博客迁移，本文写于2012年8月】</p>
-<p>最近开始接触 <a href="http://opencv.org/" target="_blank" rel="noopener">OpenCV(Open Source Computer Vision Library)</a> ，OpenCV对于图像处理已经十分强大，对于一些常见的应用仅用短短几行代码即可实现。官方释放的Python语言接口有两个cv2.cv和cv2，cv2加载的图像数据类型是Numpy类型，可以直接用Numpy处理，而cv2.cv的数据类型是OpenCV类型的。第三方的pyopencv也不错。 </p>
-<p>使用cv2.cv对人脸识别的代码如下，使用的是已经训练好的二分类模型( haarcascade_frontalface_alt为人脸分类模型， haarcascade_eyes为人眼分类模型 )，利用haar级联分类器( HaarDetectObjects )进行预测， 函数 HaarDetectObjects 使用针对某目标物体训练的级联分类器在图像中找到包含目标物体的矩形区域，并且将这些区域作为一序列的矩形框返回。函数以不同比例大小的扫描窗口对图像进行几次搜索； 影响效果的主要有两个参数： scale_factor和 min_neighbors。</p>
+<p>最近开始接触 <a href="http://opencv.org/" target="_blank" rel="noopener">OpenCV(Open Source Computer Vision Library)</a> ，OpenCV对于图像处理已经十分强大，对于一些常见的应用仅用短短几行代码即可实现。官方释放的Python语言接口有两个cv2.cv和cv2，cv2加载的图像数据类型是Numpy类型，可以直接用Numpy处理，而cv2.cv的数据类型是OpenCV类型的。第三方的pyopencv也不错。<br><a id="more"></a><br>使用cv2.cv对人脸识别的代码如下，使用的是已经训练好的二分类模型( haarcascade_frontalface_alt为人脸分类模型， haarcascade_eyes为人眼分类模型 )，利用haar级联分类器( HaarDetectObjects )进行预测， 函数 HaarDetectObjects 使用针对某目标物体训练的级联分类器在图像中找到包含目标物体的矩形区域，并且将这些区域作为一序列的矩形框返回。函数以不同比例大小的扫描窗口对图像进行几次搜索； 影响效果的主要有两个参数： scale_factor和 min_neighbors。</p>
 <blockquote>
 <p>scale_factor： 在前后两次相继的扫描中，搜索窗口的比例系数。例如1.1指将搜索窗口依次扩大10%。<br>min_neighbors： 构成检测目标的相邻矩形的最小个数 在前后两次相继的扫描中，搜索窗口的比例系数。</p>
 </blockquote>
@@ -467,15 +488,24 @@
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
 
             
               
               
               <div class="site-state-item site-state-tags">
-                
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
-                
+                </a>
               </div>
             
 
