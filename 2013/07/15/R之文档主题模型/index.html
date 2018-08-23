@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="R,NLP,文本挖掘,LDA,主题模型," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="创建自然语言的主题模型（topic model）,目前比较著名的是LDA（Latent Dirichlet allocation） ，在R语言中，有两个包（package）提供了LDA模型：lda和topicmodels。lda提供了基于Gibbs采样的经典LDA、MMSB（the mixed-membership stochastic blockmodel )、RTM（Relational To">
+<meta name="keywords" content="R,NLP,文本挖掘,LDA,主题模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="R之文档主题模型">
+<meta property="og:url" content="http://yoursite.com/2013/07/15/R之文档主题模型/index.html">
+<meta property="og:site_name" content="平行宇宙">
+<meta property="og:description" content="创建自然语言的主题模型（topic model）,目前比较著名的是LDA（Latent Dirichlet allocation） ，在R语言中，有两个包（package）提供了LDA模型：lda和topicmodels。lda提供了基于Gibbs采样的经典LDA、MMSB（the mixed-membership stochastic blockmodel )、RTM（Relational To">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2013/07/15/R之文档主题模型/2105432825895748420.png">
+<meta property="og:image" content="http://yoursite.com/2013/07/15/R之文档主题模型/2109092000592986045.png">
+<meta property="og:image" content="http://yoursite.com/2013/07/15/R之文档主题模型/742249513686046722.png">
+<meta property="og:image" content="http://yoursite.com/2013/07/15/R之文档主题模型/1453536779833857768.png">
+<meta property="og:image" content="http://yoursite.com/2013/07/15/R之文档主题模型/3322530625192768380.png">
+<meta property="og:image" content="http://yoursite.com/2013/07/15/R之文档主题模型/3885199103637335205.png">
+<meta property="og:image" content="http://yoursite.com/2013/07/15/R之文档主题模型/1408219308583461389.png">
+<meta property="og:image" content="http://yoursite.com/2013/07/15/R之文档主题模型/2211267417138965521.png">
+<meta property="og:updated_time" content="2018-08-23T02:21:05.792Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="R之文档主题模型">
+<meta name="twitter:description" content="创建自然语言的主题模型（topic model）,目前比较著名的是LDA（Latent Dirichlet allocation） ，在R语言中，有两个包（package）提供了LDA模型：lda和topicmodels。lda提供了基于Gibbs采样的经典LDA、MMSB（the mixed-membership stochastic blockmodel )、RTM（Relational To">
+<meta name="twitter:image" content="http://yoursite.com/2013/07/15/R之文档主题模型/2105432825895748420.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2013/07/15/R之文档主题模型/"/>
+
+
+
+
+
+  <title>R之文档主题模型 | 平行宇宙</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d5636d88fa0b83a8216fdd24623a6cf4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">平行宇宙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">网络连接你我,数据衡量现实,计算照亮生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/07/15/R之文档主题模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="平行宇宙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://tvax3.sinaimg.cn/crop.2.0.172.172.180/629f6675ly8fuhfq9ayw8j204z04staf.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="平行宇宙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">R之文档主题模型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-07-15T23:22:00+08:00">
+                2013-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>创建自然语言的<a href="https://en.wikipedia.org/wiki/Topic_model" target="_blank" rel="noopener">主题模型（topic model）</a>,目前比较著名的是<a href="https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation" target="_blank" rel="noopener">LDA（Latent Dirichlet allocation）</a> ，在R语言中，有两个包（package）提供了LDA模型：<code>lda</code>和<code>topicmodels</code>。<code>lda</code>提供了基于Gibbs采样的经典LDA、MMSB（the mixed-membership stochastic blockmodel )、RTM（Relational Topic Model）和基于VEM（variational expectation-maximization）的sLDA( supervisedLDA)、RTM。<code>topicmodels</code>基于包<code>tm</code>，提供LDA_VEM、LDA_Gibbs、CTM_VEM（correlated topics model）三种模型。另外包<code>textir</code>也提供了其他类型的主题模型。<br><a id="more"></a><br>关于主题模型和LDA的原理网络上有大把的文章和论文，本文仅限于 <em>topicmodels</em> 包的使用和LDA建模的一些讨论。</p>
+<ul>
+<li><strong> 文本数据的获取与分词</strong></li>
+</ul>
+<p>本文使用的数据为电影《 <a href="http://movie.douban.com/subject/3530403/" target="_blank" rel="noopener">云图</a> 》在豆瓣上的长篇评论文章，目前有两千多篇影评，只获取500篇（多了破电脑处理不了），然后使用 <em>Rwordseg</em> 进行分词。在网络上找到一些停止词词汇、情感的正面和负面词汇，在分词后，过滤掉停止词，分别提取了正面词汇和负面词汇。</p>
+<p>豆瓣影评的获取方法参 <a href="http://qxde01.blog.163.com/blog/static/6733574420132915952828/" target="_blank" rel="noopener">见前一篇博文</a> 。</p>
+<p>《云图》在豆瓣的总评分为8.0，评分不俗，这部电影需要聚精会神地观看，稍不留神就对不上了。在获取的500篇影评中，有评分记录的494篇，评5分的219篇，评4分的190篇，评3分的81篇。</p>
+<p>在去掉数字和字母之后，有效数据 346+149=495篇。</p>
+<ul>
+<li><strong>LDA主题建模</strong></li>
+</ul>
+<p>将这500篇数据分为350篇的训练集和150篇的测试集。</p>
+<p>LDA类似于聚类，属于无监督学习，通常需要事先设定主题的数量。除了利用经验的方法设定外，一个常用的方式是计算模型的困惑度（perplexity），相对地讲，困惑度越小，LDA模型越优，模型的泛化能力越强，但是在实际应用中往往并非如此。还可以利用主题的平均相似度评估模型。</p>
+<p>将主题数设置2～25，使用LDA_VEM模型，其困惑度如下图，不幸的是，困惑度的变化趋势并不像论文呈现的那样有完美的拐点，而是一直处于下降的趋势，测试集的困惑度是上升的变化趋势，很难利用困惑度确定主题数。</p>
+<p>注意函数 posterior 具有预测功能，其中 posterior(object, newdata) 的 object 是一个 TopicModel ， newdata 是一个 DocumentTermMatrix 。</p>
+<p><img src="/2013/07/15/R之文档主题模型/2105432825895748420.png" alt="使用R创建文档主题模型 - 平行宇宙" title="使用R创建文档主题模型 - 平行宇宙"></p>
+<p>LDA模型的参数alpha估计随着主题数的增多而减小，比默认值要小，表明对于Dirichlet分布数据集，文档倾向于少量主题。</p>
+<p>文档-主题的信息熵在主题数k为8时，达到最大值，比较此处的困惑度，困惑度的变化率越来越小，我们不妨认定k=8时是最优模型。</p>
+<p>训练集和测试集一共出现词汇15110，前者13344个，后者6535个，而相同的只有4769个，测试集中有1766个词汇不在训练集中，训练集太少，训练的模型可用性较差。</p>
+<p><img src="/2013/07/15/R之文档主题模型/2109092000592986045.png" alt="使用R创建文档主题模型 - 平行宇宙" title="使用R创建文档主题模型 - 平行宇宙"></p>
+<ul>
+<li><strong>文档-主题分布 </strong></li>
+</ul>
+<p>下图展示了所有文档主题概率分布，颜色越深，表示属于该主题的概率越高。对于训练集，大多数样本都可以归属到一个突出的主题，但也有不少样本归属不明显，对于测试集的预测效果更差。 alpha初始值不同的情况下， 每次运行结果可能不一样，有时差别可能很大。</p>
+<p><img src="/2013/07/15/R之文档主题模型/742249513686046722.png" alt="使用R创建文档主题模型 - 平行宇宙" title="使用R创建文档主题模型 - 平行宇宙"></p>
+<p>从训练集中随机抽取10个样本，显示主题的概率（权重）分布，如下图。每个主题用权重最高的5个词汇表示，虽然每个文档的主题归属相当明显，图中的长条越长，表示归属该主题的可能性越高，但是主题之间相同的词汇相当多。而在测试集随机抽取的10个样本中，许多样本主题归属并不明显。</p>
+<p><img src="/2013/07/15/R之文档主题模型/1453536779833857768.png" alt="使用R创建文档主题模型 - 平行宇宙" title="使用R创建文档主题模型 - 平行宇宙"></p>
+<p><img src="/2013/07/15/R之文档主题模型/3322530625192768380.png" alt="使用R创建文档主题模型 - 平行宇宙" title="使用R创建文档主题模型 - 平行宇宙"></p>
+<p>抽取每个主题阈值在0.002以上的前10个词汇，绘制成网络图，如下图，从左至右分别是2个主题、5个主题、8个主题，可以发现主题之间相同的词汇相当多，从前10个词汇来看，有的主题之间区别不明显。</p>
+<p><img src="/2013/07/15/R之文档主题模型/3885199103637335205.png" alt="使用R创建文档主题模型 - 平行宇宙" title="使用R创建文档主题模型 - 平行宇宙"></p>
+<ul>
+<li><strong>模型比较</strong></li>
+</ul>
+<p>对495篇影评分别建立LDA_VEM、 LDA_VEM_fixed、LDA_Gibbs、CTM四种模型，设主题数k=8，得到四种模型对文档分配给最有可能的主题的概率分布图如下，很容易看出 LDA_VEM模型的概率值集中于1附近，也就是说绝大多数的文档都有一个可能性非常大的主题归属，而其他三个模型概率比较分散，实际上 LDA_VEM的困惑度也是最小的 。</p>
+<p><img src="/2013/07/15/R之文档主题模型/1408219308583461389.png" alt="使用R创建文档主题模型 - 平行宇宙" title="使用R创建文档主题模型 - 平行宇宙"></p>
+<p>根据主题归属合并词频矩阵，  LDA_VEM、  LDA_Gibbs的主题余玄相似度如下图，颜色越浅（偏黄色）相似度越高， LDA_Gibbs主题之间的差异性比 LDA_VEM要小。</p>
+<p><img src="/2013/07/15/R之文档主题模型/2211267417138965521.png" alt="使用R创建文档主题模型 - 平行宇宙" title="使用R创建文档主题模型 - 平行宇宙"></p>
+<ul>
+<li><strong> 小结</strong></li>
+</ul>
+<ol>
+<li>如果要训练一个主题模型用于预测，数据量要足够大；</li>
+<li>理论上讲，词汇长度越长，表达的主题越明确，这需要一个优秀的词库；</li>
+<li>如果想要主题划分的更细或突出专业主题，需要专业的词典；</li>
+<li>LDA的参数alpha对计算效率和模型结果影响非常大，选择合适的alpha可以提高效率和模型可靠性；</li>
+<li>主题数的确定没有特别突出的方法，更多需要经验；</li>
+<li>根据时间轴探测热点话题和话题趋势，主题模型是一个不错的选择；</li>
+<li>前面提到的正面词汇和负面词汇，如何利用，本文没有找到合适的方法；</li>
+<li>代码围观: <a href="https://github.com/qxde01/myRproj/tree/master/CloudAtlas" target="_blank" rel="noopener">Github</a>   (代码和数据有更新，结果和本文描述有差异，基本过程没有变化)</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/文本挖掘/" rel="tag"># 文本挖掘</a>
+          
+            <a href="/tags/LDA/" rel="tag"># LDA</a>
+          
+            <a href="/tags/主题模型/" rel="tag"># 主题模型</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/06/06/领导的脸/" rel="next" title="领导的脸">
+                <i class="fa fa-chevron-left"></i> 领导的脸
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/08/24/图像纹理的定义/" rel="prev" title="图像纹理的定义">
+                图像纹理的定义 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://tvax3.sinaimg.cn/crop.2.0.172.172.180/629f6675ly8fuhfq9ayw8j204z04staf.jpg"
+                alt="平行宇宙" />
+            
+              <p class="site-author-name" itemprop="name">平行宇宙</p>
+              <p class="site-description motion-element" itemprop="description">执着的信念,无妄的追求,理性的思索</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/qxde01" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/qxde01" target="_blank" title="weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">平行宇宙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

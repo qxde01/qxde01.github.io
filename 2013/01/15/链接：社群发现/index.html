@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="社交网络分析,图分析,关系,社群发现,igraph," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="【原文上中两篇，现在合在一起】 社群或社区是这样一种组结构， 社群 内的边密度要高于 社群 间边密度。即 社群 内部的节点 之间的连接相对紧密，各社群之间的连接相对来说比较稀疏。在社会网络分析中，社区 经常被看作是一些凝聚子结构，如派系、群、组、块等。社群主要分为重 叠社群图和划分社群图两类，其中后者是 把网络中社区结构的发现看作是对整个网络的划分，目前已经有不少成熟的算法实现。社群发现的过程实际">
+<meta name="keywords" content="社交网络分析,图分析,关系,社群发现,igraph">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链接：社群发现">
+<meta property="og:url" content="http://yoursite.com/2013/01/15/链接：社群发现/index.html">
+<meta property="og:site_name" content="平行宇宙">
+<meta property="og:description" content="【原文上中两篇，现在合在一起】 社群或社区是这样一种组结构， 社群 内的边密度要高于 社群 间边密度。即 社群 内部的节点 之间的连接相对紧密，各社群之间的连接相对来说比较稀疏。在社会网络分析中，社区 经常被看作是一些凝聚子结构，如派系、群、组、块等。社群主要分为重 叠社群图和划分社群图两类，其中后者是 把网络中社区结构的发现看作是对整个网络的划分，目前已经有不少成熟的算法实现。社群发现的过程实际">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2013/01/15/链接：社群发现/6598086814912357500.jpg">
+<meta property="og:image" content="http://yoursite.com/2013/01/15/链接：社群发现/6597188513914036488.jpg">
+<meta property="og:image" content="http://yoursite.com/2013/01/15/链接：社群发现/6597932883284821126.jpg">
+<meta property="og:image" content="http://yoursite.com/2013/01/15/链接：社群发现/6597929584749985793.jpg">
+<meta property="og:updated_time" content="2018-08-23T06:44:14.330Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="链接：社群发现">
+<meta name="twitter:description" content="【原文上中两篇，现在合在一起】 社群或社区是这样一种组结构， 社群 内的边密度要高于 社群 间边密度。即 社群 内部的节点 之间的连接相对紧密，各社群之间的连接相对来说比较稀疏。在社会网络分析中，社区 经常被看作是一些凝聚子结构，如派系、群、组、块等。社群主要分为重 叠社群图和划分社群图两类，其中后者是 把网络中社区结构的发现看作是对整个网络的划分，目前已经有不少成熟的算法实现。社群发现的过程实际">
+<meta name="twitter:image" content="http://yoursite.com/2013/01/15/链接：社群发现/6598086814912357500.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2013/01/15/链接：社群发现/"/>
+
+
+
+
+
+  <title>链接：社群发现 | 平行宇宙</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d5636d88fa0b83a8216fdd24623a6cf4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">平行宇宙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">网络连接你我,数据衡量现实,计算照亮生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/01/15/链接：社群发现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="平行宇宙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://tvax3.sinaimg.cn/crop.2.0.172.172.180/629f6675ly8fuhfq9ayw8j204z04staf.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="平行宇宙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">链接：社群发现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-01-15T23:52:37+08:00">
+                2013-01-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Graph/" itemprop="url" rel="index">
+                    <span itemprop="name">Graph</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【原文上中两篇，现在合在一起】</p>
+<p>社群或社区是这样一种组结构， 社群 内的边密度要高于 社群 间边密度。即 社群 内部的节点 之间的连接相对紧密，各社群之间的连接相对来说比较稀疏。在社会网络分析中，社区 经常被看作是一些凝聚子结构，如派系、群、组、块等。社群主要分为重 叠社群图和划分社群图两类，其中后者是 把网络中社区结构的发现看作是对整个网络的划分，目前已经有不少成熟的算法实现。社群发现的过程实际上是一个节点群组过程，许多方法都离不开聚类方法。<br><a id="more"></a></p>
+<ul>
+<li>随机漫步（ Random Walk ）</li>
+</ul>
+<p>随机漫步是一种数学统计模型，它是一连串的轨迹所组成，其中每一次都是随机 的，它能用来表示不规则的变动形式， 通常假设随机漫步是以 马尔可夫链 或 马可夫过程 的形式出现的。 随机漫步社群发现的思想是假设一漫步者在一个社区（图）里随机游走，漫步者可能被困在连接稠密的区域里（想象一下初次进入一个道路错综复杂的街区），漫步者很容易被“困”（trapped）在里面，这个稠密区域就是漫步者发现的社群。根据图的属性，定义节点和社群之间的结构相似度进行度量漫步者的“行为”，这种相似度是一种可计算的、高效的距离相似度，这样就可以利用合并层次聚类方法建立社区的层次结构，也就是社区结构。可以利用从i点走向（连接，边）j点的概率定义距离相似度（概率距离），若i和j在同一社群里，概率相对比较高。这种算法最坏情况下的计算复杂度为O(mn^2)，m为图的边，n为图的节点。</p>
+<p>在R:package:igraph的随机漫步社群发现函数为<code>cluster_walktrap</code>。在我的人人网好友关系网络进行随机漫步社区发现计算，发现5个社群，其中两个比较密集，代表不同的同学群体。整体效果是非常符合实际的。</p>
+<p><img src="/2013/01/15/链接：社群发现/6598086814912357500.jpg" alt="链接：社群发现 - 平行宇宙" title="链接：社群发现 - 平行宇宙"></p>
+<ul>
+<li>自旋玻璃（Spin Glass）</li>
+</ul>
+<p><a href="http://zh.wikipedia.org/wiki/%E8%87%AA%E6%97%8B%E7%8E%BB%E7%92%83" target="_blank" rel="noopener">自旋玻璃</a> 是一个物理概念，是一些物理材料的一种状态，代表一种无序的状态。自旋玻璃模型可分为有限维系统、随机有限维连通系统和完全连通系统，如果把社会网络看成一个随机网络场，在一些假设条件下，社会网络可近似于随机有限维连通系统，就可以利用自旋玻璃模型的一些特性来发现和解释社群。对于网络中的一个节点，与其他节点的连接和缺省的连接可看作磁性材料的磁性相互作用和反磁性相互作用，两种相互作用形成一个能力函数，当能量函数最小时， 社会网络的层次结构被解释为旋转配置(spin con?guration )，此时 网络内部的组别（聚类）可看作自旋系统的状态，划分组别或网络层次的过程是一个i聚类过程。</p>
+<p>在R:package:igraph的自旋玻璃社群发现函数为<code>cluster_spinglass</code>，其能量函数的求解使用了<a href="http://zh.wikipedia.org/wiki/%E6%A8%A1%E6%8B%9F%E9%80%80%E7%81%AB" target="_blank" rel="noopener">模拟退火方法</a>。在我的人人网好友关系中，利用此方法可发现三大社群，两个非常集中的社群，分别代表的是中学同学和大学同学，而第三个社群非常分散，是后来已经不怎么登录时断断续续加入的好友，这几个好友之间也分属几个小的团体。</p>
+<p><img src="/2013/01/15/链接：社群发现/6597188513914036488.jpg" alt="链接：社群发现(上) - 平行宇宙" title="链接：社群发现(上) - 平行宇宙"></p>
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Girvan%E2%80%93Newman_algorithm" target="_blank" rel="noopener">Girvan–Newman 算法</a></li>
+</ul>
+<p>社会网络分析中的分层划分（Hierarchical Clustering，层次聚类）中的分裂法的做法是找出相互关联最弱的节点并删除它们之间的边，通过这样的反复操作将网络划分为越来越小的组件，也可以在任何时刻终止这个过程并将当时的结果作为社区结构，同样也可以用系统树描述这个将网络划分为越来越小的团队的过程。Grivan-Newman(GN)算法有些类似，GN算法是基于edge betweenness的算法。</p>
+<p>边介(edge betweenness)被Newman定义为通过该边的节点之间的最短路径的条数，并且不同社区之间的边的介数(betweenness,betweenness centrality的简称??)值较高。该方法是通过不断地寻找并删除 边介值最高的边来得到社会网络中的社区结构的，称此算法为 GN 算法，其步骤为：</p>
+<blockquote>
+<ul>
+<li>Step1：计算网络中每条边的 betweenness;</li>
+<li>Step2：删除 betweenness 值最高的边；</li>
+<li>Step3：重新计算所有边的 betweenness;</li>
+<li>Step4：重复 Step2- Step4 直到所有的边都被删除。</li>
+</ul>
+</blockquote>
+<p>可以将 GN 算法看作是一种分裂法，不过与一般分裂法不同的是，GN 算法不是寻找关联最弱的节点对然后删除它们之间的边，而是寻找最“between”的边并删除它。通常一条边的删除会很大程度上影响到许多其它边的 betweenness 的值，因此，每次在执行完边的删除之后，必需重新计算所有边的 betweenness 值。这是一个非常耗时的任务，为此，Brandes和Newman分别给出了一种快速重新计算边介的方法。<br>该方法的基本思想是：选择一个节点作为中心节点(Center)，只考虑中心节点和其它节点之间的最短路径，计算每条边由当前这些最短路径得到的 betweenness 值，并将计算结果添加到当前该边的 betweenness 和中。然后，改变中心节点，即选择另外一个节点作为中心节点，并重复刚才的计算过程直到每个节点都曾被选中作为中心节点为止。因为在刚才的计算过程中，每条最短路径的端点都被计算过两次，计算得到的每条边的 betweenness 的和正好等于该边准确的 betweenness 的两倍。<br>在R:package:igraph的基于边介的Grivan-Newman社群发现算法实现函数为<code>cluster_edge_betweenness</code>。在我的人人网好友关系中，可以很好地发现两大密集的社群，其余的比较散乱地分布在周围。<br><img src="/2013/01/15/链接：社群发现/6597932883284821126.jpg" alt="链接：社群发现 - 平行宇宙" title="链接：社群发现 - 平行宇宙"></p>
+<ul>
+<li>标签传播算法</li>
+</ul>
+<p>标签传播(label propagation)算法是一种近线性算法，其复杂度只有O(km)，k为迭代次数，通常情况下k&lt;&lt;m，通过5次迭代95%的节点可以够达到最终类别。算法的基本思想是：每个节点的社群归属即标签由相邻节点的标签决定，相邻节点的最大数的标签即为该节点的标签；可以理解为由邻居投票，和票数多的在一起。初始化时，给每个节点一个独特的标签（类似层次聚类合并算法的初始化），通过标签的传播，密集连接的节点对一个特殊的标签迅速达成共识，这些密集的节点迅速的扩张，直至这些具有相同的标签的节点组成一个社群。这个过程通过迭代完全，同步迭代方式只依赖于上一轮的迭代，异步迭代方式还包含已经更新完成的节点。但是，此算法不保证收敛，需要添加一些限定条件才能保证收敛，一种简单的方法是迭代几次之后随机地断开。如果初始化时，事先标注一些社群的中心节点，是一种不错的方法。</p>
+<p>在R:package:igraph的近线性的标签传播社群发现算法实现函数为<code>cluster_label_prop</code>，该函数使用节点的权重作为限制条件，其初始化参数initial可以设定节点的标签。在我的人人网好友关系中，在没有限定任何条件下，只能发现两大社群，对于小型社群无法识别。</p>
+<p><img src="/2013/01/15/链接：社群发现/6597929584749985793.jpg" alt="链接：社群发现(中) - 平行宇宙" title="链接：社群发现(中) - 平行宇宙"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/社交网络分析/" rel="tag"># 社交网络分析</a>
+          
+            <a href="/tags/图分析/" rel="tag"># 图分析</a>
+          
+            <a href="/tags/关系/" rel="tag"># 关系</a>
+          
+            <a href="/tags/社群发现/" rel="tag"># 社群发现</a>
+          
+            <a href="/tags/igraph/" rel="tag"># igraph</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2012/08/25/初识OpenCV/" rel="next" title="初识OpenCV">
+                <i class="fa fa-chevron-left"></i> 初识OpenCV
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/03/31/豆瓣阅读统计及可视化/" rel="prev" title="豆瓣阅读统计及可视化">
+                豆瓣阅读统计及可视化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://tvax3.sinaimg.cn/crop.2.0.172.172.180/629f6675ly8fuhfq9ayw8j204z04staf.jpg"
+                alt="平行宇宙" />
+            
+              <p class="site-author-name" itemprop="name">平行宇宙</p>
+              <p class="site-description motion-element" itemprop="description">执着的信念,无妄的追求,理性的思索</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/qxde01" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/qxde01" target="_blank" title="weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">平行宇宙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

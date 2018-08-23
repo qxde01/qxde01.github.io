@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="R,读书,数据分析,豆瓣," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="【原文上下两篇，现在合在一起，大多数代码不能运行了】许多阅读过的书籍早已抛掷九霄云外了，毫无印象。后来在豆瓣上断断续续做了些记录，直至2012年后半年开始做不间断的记录。即使记录书名，也可以帮助自己回忆阅读内容，建立不同书籍之间的关系，进而形成系统化的知识。久而久之，理解能力和思考能力都能得到非常大的提高，进入一个全新的领域的学习曲线也会越来越短。正所谓，阅读越多，越感觉知之甚少，促使自己多读书多">
+<meta name="keywords" content="R,读书,数据分析,豆瓣">
+<meta property="og:type" content="article">
+<meta property="og:title" content="豆瓣阅读统计及可视化">
+<meta property="og:url" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/index.html">
+<meta property="og:site_name" content="平行宇宙">
+<meta property="og:description" content="【原文上下两篇，现在合在一起，大多数代码不能运行了】许多阅读过的书籍早已抛掷九霄云外了，毫无印象。后来在豆瓣上断断续续做了些记录，直至2012年后半年开始做不间断的记录。即使记录书名，也可以帮助自己回忆阅读内容，建立不同书籍之间的关系，进而形成系统化的知识。久而久之，理解能力和思考能力都能得到非常大的提高，进入一个全新的领域的学习曲线也会越来越短。正所谓，阅读越多，越感觉知之甚少，促使自己多读书多">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/4887812970680644996.png">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/6598266035308347042.png">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/6597844922355131022.png">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/6597413913796533091.png">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/6597543656169114423.png">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/6598115402215341101.png">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/6597579940052874530.png">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/6598291324075852683.png">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/6597769056053014257.png">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/6597714080471620089.png">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/6597795444332093325.png">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/6597710781936737466.png">
+<meta property="og:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/2230126240578794611.png">
+<meta property="og:updated_time" content="2018-08-23T06:13:32.284Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="豆瓣阅读统计及可视化">
+<meta name="twitter:description" content="【原文上下两篇，现在合在一起，大多数代码不能运行了】许多阅读过的书籍早已抛掷九霄云外了，毫无印象。后来在豆瓣上断断续续做了些记录，直至2012年后半年开始做不间断的记录。即使记录书名，也可以帮助自己回忆阅读内容，建立不同书籍之间的关系，进而形成系统化的知识。久而久之，理解能力和思考能力都能得到非常大的提高，进入一个全新的领域的学习曲线也会越来越短。正所谓，阅读越多，越感觉知之甚少，促使自己多读书多">
+<meta name="twitter:image" content="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/4887812970680644996.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/"/>
+
+
+
+
+
+  <title>豆瓣阅读统计及可视化 | 平行宇宙</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d5636d88fa0b83a8216fdd24623a6cf4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">平行宇宙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">网络连接你我,数据衡量现实,计算照亮生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/03/31/豆瓣阅读统计及可视化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="平行宇宙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://tvax3.sinaimg.cn/crop.2.0.172.172.180/629f6675ly8fuhfq9ayw8j204z04staf.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="平行宇宙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">豆瓣阅读统计及可视化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-03-31T19:52:24+08:00">
+                2013-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据分析/" itemprop="url" rel="index">
+                    <span itemprop="name">数据分析</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>【原文上下两篇，现在合在一起，大多数代码不能运行了】<br>许多阅读过的书籍早已抛掷九霄云外了，毫无印象。后来在豆瓣上断断续续做了些记录，直至2012年后半年开始做不间断的记录。即使记录书名，也可以帮助自己回忆阅读内容，建立不同书籍之间的关系，进而形成系统化的知识。久而久之，理解能力和思考能力都能得到非常大的提高，进入一个全新的领域的学习曲线也会越来越短。正所谓，阅读越多，越感觉知之甚少，促使自己多读书多思考，使自己不懈怠。为了梳理阅读过的书籍，使用可视化的方法更直观，在这里做一些简单的尝试。记录的东西越多，帮助越大，可分析的内容也就越多。<br><a id="more"></a></p>
+<ul>
+<li><strong>数据获取</strong></li>
+</ul>
+<p>对数据可视化的第一步当然是获取原始数据，然后才能做数据结构化、数据分析、可视化等一系列的工作。为此，编写了一个简单的获取豆瓣数据的R包：<a href="https://github.com/qxde01/Rdouban" target="_blank" rel="noopener">Rdouban</a>，<strong>由于反爬虫的进击，此包已不可用</strong>。<br>其中 user_book_status 函数是根据豆瓣用户的昵称获取自己的读书列表、标签、评论、读书笔记等信息。后面所使用的数据主要基于此函数获取的。比如获取本人的读书信息如下：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qxde &lt;-user_book_status(userid=<span class="string">'qxde01'</span> , verbose = <span class="literal">TRUE</span> )</span><br></pre></td></tr></table></figure>
+<p>返回的结果：</p>
+<ul>
+<li>collect_tags:data.frame,已读书籍的标签</li>
+<li>collect_df:data.frame,已读书籍的信息</li>
+<li>do_tags:data.frame,在读书籍的标签</li>
+<li>do_df:data.frame,在读书籍的信息</li>
+<li>wish_tags:data.frame,想读书籍的标签</li>
+<li>wish_df:data.frame,想读书籍的信息</li>
+<li>reviews:data.frame,发表的书评</li>
+<li>notes:data.frame,发表的读书笔记</li>
+<li>collect_images:list,已读书籍的封面图片,分辨率为60x80</li>
+</ul>
+<p>函数<code>user_book_viz</code>是对<code>user_book_status</code>产生的数据的统计分析和可视化，包括下面的统计（不完全）：  </p>
+<ul>
+<li><p><strong>阅读统计</strong><br>包括阅读概要统计、按月统计、按页数统计，概要统计如下图：<br><img src="/2013/03/31/豆瓣阅读统计及可视化/4887812970680644996.png" alt="豆瓣读书可视化尝试(上) - 平行宇宙" title="豆瓣读书可视化尝试(上) - 平行宇宙"></p>
+</li>
+<li><p><strong>书籍价格统计</strong></p>
+</li>
+</ul>
+<p>根据书籍定价，统计每年的价格总和。此处使用饼图显示。在 collect_df中 包含了作者、出版社、定价等信息，将其中的价格提取出来。不过有的书籍并没有价格，比如开源社区的免费书籍，需要做特殊处理。处理过程及饼图绘制如下：<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">collect_df &lt;- qxde$collect_df  </span><br><span class="line">price &lt;- as.numeric(collect_df$price)  </span><br><span class="line">p_df &lt;- data.frame(price = price,year = substr(collect_df$reading_date,<span class="number">1</span>,<span class="number">4</span> ))</span><br><span class="line">py &lt;- tapply(p_df$price,p_df$year,sum,na.rm  = <span class="literal">T</span>)  </span><br><span class="line">price_df &lt;- data.frame(money = py,year = factor(names(py)))  </span><br><span class="line">price_df &lt;- price_df[price_df$money &gt;<span class="number">0</span> ,]  </span><br><span class="line"><span class="comment">##所读书籍定价饼图  </span></span><br><span class="line">pie&lt;-  ggplot(price_df, aes(x  = <span class="string">""</span> ,y = money, fill  = year))  + </span><br><span class="line">   geom_bar(stat = <span class="string">"identity"</span> ,width  = <span class="number">1</span> ) +</span><br><span class="line">   geom_text(aes(y  =  money / <span class="number">2</span>   +  c(<span class="number">0</span> , cumsum(money)[-length(money)]),label  = paste0(money,<span class="string">'￥'</span>)),size= <span class="number">10</span>)  </span><br><span class="line">pie  +  coord_polar(theta = <span class="string">"y"</span> )+ labs(x =<span class="string">''</span>,y = <span class="string">''</span> ,title = paste0(<span class="string">'总价值(&gt;=)'</span>,sum(price,na.rm = <span class="literal">T</span>),<span class="string">'元'</span>)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2013/03/31/豆瓣阅读统计及可视化/6598266035308347042.png" alt="豆瓣读书可视化 - 平行宇宙" title="豆瓣读书可视化 - 平行宇宙"></p>
+<ul>
+<li><strong>标签云</strong><br>一般情况下，每阅读一本书，都会设定一些标签，代表这本书的类型。在获取到的数据list（上述数据名称qxde）中有一个元素名称为个 collect_tags 的data.frame，它是所有阅读过书籍的标签及其使用频率。此处使用包 wordcloud 绘制标签云图，从下图可以看出，我阅读比较多的是科幻、数据分析、计算机、历史类。代码如下：<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">library</span>(wordcloud)  </span><br><span class="line"> collect_tags &lt;- qxde$collect_tags  </span><br><span class="line"> par(bg =<span class="string">'gray90'</span> )  </span><br><span class="line"> wordcloud(words = collect_tags$tag_label, freq = collect_tags$tag_freq, min.freq = <span class="number">1</span> ,  </span><br><span class="line">           random.order = <span class="literal">F</span>,scale = c(<span class="number">5</span>,<span class="number">1.5</span> ), ordered.colors = <span class="literal">F</span>,  </span><br><span class="line">           colors =rainbow(length(table(collect_tags$tag_label))))  </span><br><span class="line">title(main = paste0( <span class="string">'所读书籍的标签'</span> ))</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/2013/03/31/豆瓣阅读统计及可视化/6597844922355131022.png" alt="豆瓣读书可视化 - 平行宇宙" title="豆瓣读书可视化 - 平行宇宙"></p>
+<ul>
+<li><strong>封面缩略图拼接</strong></li>
+</ul>
+<p>豆瓣上大多数书籍都有一个封面图，其中 collect_images是60X80的缩略图 ， 然使用 EBImage的 combine 函数合并图像，代码如下：<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(EBImage)  </span><br><span class="line">img &lt;- combine(qxde$collect_images)  </span><br><span class="line">display(img , method = <span class="string">"raster"</span> , all = <span class="literal">T</span> )</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2013/03/31/豆瓣阅读统计及可视化/6597413913796533091.png" alt="豆瓣读书可视化 - 平行宇宙" title="豆瓣读书可视化 - 平行宇宙"></p>
+<ul>
+<li><strong>书籍之间的图关系</strong><br>从 collect_df中 提取出书籍名称与对应的标签，并将之转化为两列 “ 书名-&gt;标签 ” 的 data.frame . 使用igraph包绘制书籍、标签之间的关系图。上图为利用随机漫步社区发现方法 walktrap.community 绘制，下图利用力学导向的 fruchterman.reingold算法绘制。两个图形中，节点大的为书籍名称，小的为标签。其中科幻类书籍比较集中，主要为大刘的作品，一类为政治经济类，一类历史类，其中数据分析、计算机及周边的学科这一类是重点，因为和所学专业和从事的工作相关。<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">.todf &lt;- <span class="keyword">function</span> (x)&#123;</span><br><span class="line"> x &lt;- as.character(x)</span><br><span class="line"> x &lt;- gsub(<span class="string">'tag'</span>,<span class="string">''</span>,c(x[<span class="number">1</span>],x[<span class="number">2</span>]))</span><br><span class="line"> left = x[<span class="number">1</span>]</span><br><span class="line"> right &lt;- unlist(strsplit(x[<span class="number">2</span>],<span class="string">' '</span>))</span><br><span class="line"> right &lt;- right[nchar(right) &gt; <span class="number">0</span> ]</span><br><span class="line"> right &lt;- right[right != left]</span><br><span class="line"> left &lt;- rep(left,length(right))</span><br><span class="line"> cbind(left,right)</span><br><span class="line"> &#125;</span><br><span class="line">tag_list &lt;- apply(collect_df[,c( “title” , “user_tags” )],<span class="number">1</span>,.todf)</span><br><span class="line">n = length(tag_list)</span><br><span class="line">tag &lt;- c()</span><br><span class="line"> <span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:n)&#123;</span><br><span class="line"> tag &lt;- rbind(tag,tag_list[[i]])</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">require</span>(igraph)</span><br><span class="line"> g &lt;- graph.data.frame(tag,directed = <span class="literal">F</span>)</span><br><span class="line"> title &lt;- unique(collect_df$title)</span><br><span class="line"> col = rep( <span class="number">2</span> ,length(V(g)$name))</span><br><span class="line"> col[match(V(g)$name,title)] &lt;- <span class="number">4</span></span><br><span class="line"> vcex = col;vcex[vcex == <span class="number">4</span> ] = <span class="number">1.2</span> ;vcex[vcex == <span class="number">2</span> ] = <span class="number">1</span></span><br><span class="line"> wc = walktrap.community(g)</span><br><span class="line"> par(mar = rep(<span class="number">2</span> , <span class="number">4</span> ))</span><br><span class="line"> plot(wc,g,vertex.label = V(g)$name,vertex.size = col,edge.arrow.size = <span class="number">0.5</span> )</span><br><span class="line"> <span class="comment">### 力学导向的fruchterman.reingold关系图</span></span><br><span class="line"> plot(g, layout = layout.fruchterman.reingold, vertex.size =col,vertex.label.dist =<span class="number">0</span>, vertex.color =col+<span class="number">1</span>,</span><br><span class="line"> edge.arrow.size = <span class="number">0.5</span> ,vertex.label = V(g)$name,vertex.label.cex = vcex,vertex.label.color = col + <span class="number">2</span> )</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/2013/03/31/豆瓣阅读统计及可视化/6597543656169114423.png" alt="豆瓣读书可视化 - 平行宇宙" title="豆瓣读书可视化 - 平行宇宙"><br><img src="/2013/03/31/豆瓣阅读统计及可视化/6598115402215341101.png" alt="豆瓣读书可视化 - 平行宇宙" title="豆瓣读书可视化 - 平行宇宙"></p>
+<ul>
+<li><strong>书籍页数统计</strong><br>对 collect_df中的时间、页数进行处理， 并按月计算页数之和，注意有些书籍没有页数信息，无法计算在内，以缺失值NA处理， 使用ggplot2绘制树状图如下：<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pages &lt;- as.integer(gsub(<span class="string">'[页 ]'</span>,<span class="string">''</span>,collect_df$pages))</span><br><span class="line">pg_df &lt;- data.frame(collect_df$title,pages,</span><br><span class="line">month = substr(collect_df$reading_date, <span class="number">1</span> , <span class="number">7</span> ),</span><br><span class="line">year = substr(collect_df$reading_date, <span class="number">1</span> , <span class="number">4</span> ))</span><br><span class="line">pg_s &lt;- tapply(pg_df$pages,pg_df$month,sum,na.rm = <span class="literal">T</span>)</span><br><span class="line">pg_sdf &lt;- data.frame(pages =pg_s[],month = names(pg_s),year = substr(names(pg_s),<span class="number">1</span>,<span class="number">4</span>))</span><br><span class="line">ggplot(pg_sdf, aes(x = month, fill = year,colour = pages)) +</span><br><span class="line">geom_bar(stat =<span class="string">'identity'</span>, ymin = <span class="number">0</span> , aes(y = pages, ymax = pages),position =<span class="string">'dodge'</span>) +</span><br><span class="line">geom_text(aes(x = month, y = pages, ymax = pages,label = pages,hjust = ifelse(sign(pages) &gt; <span class="number">0</span> ,<span class="number">0.5</span>, <span class="number">0</span> )),</span><br><span class="line">   vjust = -<span class="number">0.8</span> ,size = <span class="number">6</span> ,colour =<span class="string">'blue'</span> ,position = position_dodge(width = <span class="number">1</span> )) +</span><br><span class="line">labs(x =<span class="string">'年-月份'</span> , y =<span class="string">'读书页数'</span> ,title = paste0(<span class="string">'总共阅读的页数(&gt;=)'</span>,sum(pg_sdf$pages),<span class="string">'页'</span>))</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/2013/03/31/豆瓣阅读统计及可视化/6597579940052874530.png" alt="豆瓣读书可视化尝试(下) - 平行宇宙" title="豆瓣读书可视化尝试(下) - 平行宇宙"></p>
+<p>实际上大多数书籍都在200～400也之间，300左右的最多：<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">m &lt;- ggplot(pg_df,aes(x = pages))  </span><br><span class="line">m + geom_histogram(binwidth =  <span class="number">50</span> )  </span><br><span class="line">m + geom_histogram(aes(y =..density..),fill = <span class="number">3</span> ) + geom_density()+</span><br><span class="line">   labs(x = <span class="string">'页数'</span> , y = <span class="string">'概率密度'</span> , title = <span class="string">'书籍页数分布'</span> )</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2013/03/31/豆瓣阅读统计及可视化/6598291324075852683.png" alt="豆瓣读书可视化尝试(下) - 平行宇宙" title="豆瓣读书可视化尝试(下) - 平行宇宙"></p>
+<ul>
+<li><strong>书籍分类</strong></li>
+</ul>
+<p>（1） 根据书籍的内容简介信息，将相近的书籍划分为一类。首先将简介文本分词，分词过程如下：<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">text.as.words&lt;-<span class="keyword">function</span>(x,stopwords=<span class="literal">NULL</span>)&#123;</span><br><span class="line">   f_cut &lt;- <span class="keyword">function</span>(x)&#123;</span><br><span class="line">    <span class="keyword">library</span>(Rwordseg)</span><br><span class="line">     unlist(strsplit(segmentCN(x,nature = <span class="literal">T</span>), <span class="string">' '</span>))</span><br><span class="line">     &#125;</span><br><span class="line">  text&lt;-gsub(<span class="string">'&lt;[^&gt;&lt;]*.&gt;'</span>,<span class="string">''</span>,x)</span><br><span class="line">  words&lt;-lapply(text,f_cut)</span><br><span class="line">  words&lt;-lapply(words,<span class="keyword">function</span>(x)&#123;x[nchar(x)&gt;<span class="number">1</span>]&#125;)</span><br><span class="line">   <span class="keyword">if</span>(!is.null(stopwords))&#123;</span><br><span class="line">     words&lt;-lapply(words,<span class="keyword">function</span>(x)&#123;x[!x %<span class="keyword">in</span>% stopwords]&#125;)</span><br><span class="line">     &#125;</span><br><span class="line">   words&lt;-sapply(words,<span class="keyword">function</span>(x)&#123;paste(x,collapse=<span class="string">' '</span>)&#125;)</span><br><span class="line">   words</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="comment">###停止词</span></span><br><span class="line"> data(stopwords)</span><br><span class="line"> intro_word&lt;-text.as.words(x=collect_df$summary,stopwords=stopwords)</span><br></pre></td></tr></table></figure></p>
+<p>（2） 使用tm包生成词频–文档矩阵（TermDocumentMatrix）：<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(tm)</span><br><span class="line">mybook&lt;-data.frame(content=intro_word,title=collect_df$title,stringsAsFactors=<span class="literal">F</span>)</span><br><span class="line">mybook&lt;-mybook[nchar(mybook$content)&gt;<span class="number">0</span>,]</span><br><span class="line">row.names(mybook)&lt;-<span class="literal">NULL</span></span><br><span class="line">m &lt;- list(Content = <span class="string">"content"</span>, ID = <span class="string">"title"</span>)</span><br><span class="line">myReader &lt;- readTabular(mapping = m)</span><br><span class="line">corpus &lt;- Corpus(DataframeSource(mybook),readerControl = list(reader = myReader,language = <span class="string">"zh_cn"</span>))</span><br><span class="line">tdm&lt;-TermDocumentMatrix(corpus, control = list(wordLengths=c(<span class="number">2</span>,<span class="literal">Inf</span>)))</span><br></pre></td></tr></table></figure></p>
+<p>（3）使用层次聚类方法对词频矩阵进行聚类，使用余弦相似度和ward方法：<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">###利用余弦相似度和层次聚类划分类别</span></span><br><span class="line">diss&lt;-dissimilarity(tdm,method=<span class="string">'cosine'</span>)</span><br><span class="line">hc &lt;- hclust(diss, method = <span class="string">"ward"</span>)</span><br><span class="line">plot(hc,col=<span class="number">4</span>, main=<span class="string">"层次聚类"</span>,ylab=<span class="string">''</span>,xlab=<span class="string">''</span>,sub=<span class="string">''</span>)</span><br><span class="line"> rect.hclust(hc,k=<span class="number">7</span>, border = <span class="number">2</span>)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2013/03/31/豆瓣阅读统计及可视化/6597769056053014257.png" alt="豆瓣读书可视化尝试(下) - 平行宇宙" title="豆瓣读书可视化尝试(下) - 平行宇宙"><br>如果分成7类，从上图可以看出效果一般，从左至右，效果越来越差，最右边的一类十分庞杂。考虑到这些词汇产生于书籍简介，有些就没有意义，比如去掉词汇”作者”,”这本”,”一本”,”这部”,”简介”,”本书”,”读者”7个词语，将产生不同的聚类效果优于上图，效果如下图：<br><img src="/2013/03/31/豆瓣阅读统计及可视化/6597714080471620089.png" alt="豆瓣读书可视化尝试(下) - 平行宇宙" title="豆瓣读书可视化尝试(下) - 平行宇宙"></p>
+<ul>
+<li><strong> 关联分析</strong></li>
+</ul>
+<p>如果将词语看成一个“购物篮的物品”，那么就可以用这些词语就组成一个项集，即一个事务数据集( transactions) ，这样可以用关联分析的方法探索词语之间的关联，从而可以了解书籍简介的内容。使用apriori算法分析如下：<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(arules)</span><br><span class="line"><span class="keyword">library</span>(arulesViz)</span><br><span class="line">intro_words&lt;-sapply(mybook$content,<span class="keyword">function</span>(x) unique(unlist(strsplit(x,<span class="string">' '</span>))))</span><br><span class="line">names(intro_words)&lt;-<span class="literal">NULL</span></span><br><span class="line">trans&lt;-as(intro_words, <span class="string">"transactions"</span>)</span><br><span class="line">itemsets&lt;- apriori(trans,parameter = list(supp = <span class="number">0.05</span>, minlen=<span class="number">1</span>,target = <span class="string">"frequent itemsets"</span>))</span><br></pre></td></tr></table></figure></p>
+<p>可产生480个频繁项集，其中含二个词语的项集238个，三个词语的项集77个。根据下面两个图形可以看出，我所阅读的书籍的主题大致可分为三类：中国历史、未来与太空（科幻）、计算机技术与商业（确切地说是和数据分析相关的技术及商业）。可以说是回顾过去、艰难地活在当下、满怀憧憬的面向未来和太空，真是杞人忧天。<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">subset2&lt;-itemsets[size(itemsets)&gt;<span class="number">1</span>]</span><br><span class="line">subset2&lt;-sort(subset2)[<span class="number">1</span>:<span class="number">100</span>]</span><br><span class="line">subset3&lt;-itemsets[size(itemsets)&gt;<span class="number">2</span>]</span><br><span class="line">png(<span class="string">'subset23.png'</span>,width=<span class="number">1000</span>,height=<span class="number">500</span>)</span><br><span class="line">par(mfrow=c(<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">plot(subset2, method=<span class="string">"graph"</span>,control=list(main=<span class="string">"至少包含两个词语的前100个项集"</span>))</span><br><span class="line">plot(subset3, method=<span class="string">"graph"</span>,control=list(main=<span class="string">"至少包含三个词语的所有项集"</span>))</span><br><span class="line">dev.off()</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2013/03/31/豆瓣阅读统计及可视化/6597795444332093325.png" alt="豆瓣读书可视化尝试(下) - 平行宇宙" title="豆瓣读书可视化尝试(下) - 平行宇宙"></p>
+<p>如果将几个代表性的词语提取出来，可以看出主题更加清晰，如下图，真是在担心人类的未来啊。<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">subwords&lt;-c(<span class="string">'历史'</span>,<span class="string">'中国'</span>,<span class="string">'人类'</span>,<span class="string">'宇宙'</span>)</span><br><span class="line">subset4&lt;-subset(itemsets,subset=items %<span class="keyword">in</span>% subwords)</span><br><span class="line">subset4&lt;-subset4[size(subset4)&gt;<span class="number">1</span>]</span><br><span class="line">subwords2&lt;-c(<span class="string">'科学'</span>,<span class="string">'思维'</span>,<span class="string">'技术'</span>,<span class="string">'研究'</span>,<span class="string">'数据'</span>,<span class="string">'分析'</span>,<span class="string">'信息'</span>)</span><br><span class="line">subset5&lt;-subset(itemsets,subset=items %<span class="keyword">in</span>% subwords2)</span><br><span class="line">png(<span class="string">'subset45.png'</span>,width=<span class="number">1000</span>,height=<span class="number">500</span>)</span><br><span class="line">par(mfrow=c(<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">plot(subset4, method=<span class="string">"graph"</span>,control=list(main=<span class="string">"历史与科幻"</span>))</span><br><span class="line">plot(subset5, method=<span class="string">"graph"</span>,control=list(main=<span class="string">"技术与思考"</span>))</span><br><span class="line">dev.off()</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2013/03/31/豆瓣阅读统计及可视化/6597710781936737466.png" alt="豆瓣读书可视化尝试(下) - 平行宇宙" title="豆瓣读书可视化尝试(下) - 平行宇宙"></p>
+<p><strong><a href="https://github.com/qxde01/Rdouban" target="_blank" rel="noopener">Rdouban</a> 阅读统计可视化函数使用方法：</strong></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span>(Rdouban) </span><br><span class="line">qxde&lt;-user_book_status(userid=<span class="string">"qxde01"</span>) <span class="comment">##获取阅读数据 </span></span><br><span class="line">data(stopwords)<span class="comment">## 中文停止词 </span></span><br><span class="line"><span class="comment">## 生成用户qxde01的2013年阅读信息可视化图形 </span></span><br><span class="line">user_book_viz(x=qxde,YEAR=<span class="string">"2013"</span>,stopwords=stopwords,back=<span class="literal">TRUE</span>)</span><br></pre></td></tr></table></figure>
+<p>生成的图形包括以下内容：<br><img src="/2013/03/31/豆瓣阅读统计及可视化/2230126240578794611.png" alt="豆瓣阅读统计及可视化(下) - 平行宇宙" title="豆瓣阅读统计及可视化(下) - 平行宇宙"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/读书/" rel="tag"># 读书</a>
+          
+            <a href="/tags/数据分析/" rel="tag"># 数据分析</a>
+          
+            <a href="/tags/豆瓣/" rel="tag"># 豆瓣</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/01/15/链接：社群发现/" rel="next" title="链接：社群发现">
+                <i class="fa fa-chevron-left"></i> 链接：社群发现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/04/22/《黑客与画家》语录摘要/" rel="prev" title="《黑客与画家》语录摘要">
+                《黑客与画家》语录摘要 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://tvax3.sinaimg.cn/crop.2.0.172.172.180/629f6675ly8fuhfq9ayw8j204z04staf.jpg"
+                alt="平行宇宙" />
+            
+              <p class="site-author-name" itemprop="name">平行宇宙</p>
+              <p class="site-description motion-element" itemprop="description">执着的信念,无妄的追求,理性的思索</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/qxde01" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/qxde01" target="_blank" title="weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">平行宇宙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

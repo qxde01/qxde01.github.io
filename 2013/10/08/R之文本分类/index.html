@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="RTextTools 是一个关于文本分类的工具包，汇集了9种算法：  BAGGING( ipred: bagging)：bagging集成分类 BOOSTING (caTools: LogitBoost )：Logit Boosting 集成分类 GLMNET(glmnet:glmnet)：基于最大似然的广义线性回归 MAXENT(maxent:maxent)：最大熵模型 NNET(nnet:n">
+<meta name="keywords" content="hexo 平行宇宙">
+<meta property="og:type" content="article">
+<meta property="og:title" content="R之文本分类">
+<meta property="og:url" content="http://yoursite.com/2013/10/08/R之文本分类/index.html">
+<meta property="og:site_name" content="平行宇宙">
+<meta property="og:description" content="RTextTools 是一个关于文本分类的工具包，汇集了9种算法：  BAGGING( ipred: bagging)：bagging集成分类 BOOSTING (caTools: LogitBoost )：Logit Boosting 集成分类 GLMNET(glmnet:glmnet)：基于最大似然的广义线性回归 MAXENT(maxent:maxent)：最大熵模型 NNET(nnet:n">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-23T04:55:35.517Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="R之文本分类">
+<meta name="twitter:description" content="RTextTools 是一个关于文本分类的工具包，汇集了9种算法：  BAGGING( ipred: bagging)：bagging集成分类 BOOSTING (caTools: LogitBoost )：Logit Boosting 集成分类 GLMNET(glmnet:glmnet)：基于最大似然的广义线性回归 MAXENT(maxent:maxent)：最大熵模型 NNET(nnet:n">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2013/10/08/R之文本分类/"/>
+
+
+
+
+
+  <title>R之文本分类 | 平行宇宙</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d5636d88fa0b83a8216fdd24623a6cf4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">平行宇宙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">网络连接你我,数据衡量现实,计算照亮生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/10/08/R之文本分类/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="平行宇宙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://tvax3.sinaimg.cn/crop.2.0.172.172.180/629f6675ly8fuhfq9ayw8j204z04staf.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="平行宇宙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">R之文本分类</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-10-08T23:32:15+08:00">
+                2013-10-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p> <a href="http://www.rtexttools.com/" target="_blank" rel="noopener">RTextTools</a> 是一个关于文本分类的工具包，汇集了9种算法：</p>
+<ul>
+<li>BAGGING( ipred: bagging)：bagging集成分类</li>
+<li>BOOSTING (caTools: LogitBoost )：Logit Boosting 集成分类</li>
+<li>GLMNET(glmnet:glmnet)：基于最大似然的广义线性回归</li>
+<li>MAXENT(maxent:maxent)：最大熵模型</li>
+<li>NNET(nnet:nnet)：神经网络</li>
+<li>RF( randomForest: randomForest )：随机森林  </li>
+<li>SLDA(ipred:slda)：scaled 线性判别分析</li>
+<li>SVM(e1071:svm)：支持向量机</li>
+<li><p>TREE (tree:tree)：递归分类树</p>
+<a id="more"></a>
+<p><a href="http://cran.r-project.org/web/packages/RTextTools/index.html" target="_blank" rel="noopener">RTextTools</a> 提供非常简单的接口和清晰的流程使用这些算法创建一个文本分类模型。下面使用电视剧《 <a href="http://movie.douban.com/subject/11627047/" target="_blank" rel="noopener">龙门镖局</a> 》在豆瓣上的324篇长篇影评数据为例，介绍RTextTools的使用方法。使用 <a href="https://github.com/qxde01/Rdouban" target="_blank" rel="noopener">Rdouban</a> 可以非常方便的获取到豆瓣影评数据，使用 <a href="http://jliblog.com/app/rwordseg" target="_blank" rel="noopener">Rwordseg</a> 分词，分类标签为用户评分。324篇影评中，一星11篇，二星27篇，三星97篇，四星123篇，五星66篇，豆瓣综合评分7.4（截止2013-09-09）。本文主要参考  RTextTools作者的   《  <a href="http://74.125.128.160/url?sa=t&amp;rct=j&amp;q=RTextTools%3A%20A%20Supervised%20Learning%20Package%20for%20Text%20Classification&amp;source=web&amp;cd=1&amp;cad=rja&amp;ved=0CCwQFjAA&amp;url=%68%74%74%70%3a%2f%2f%6a%6f%75%72%6e%61%6c%2e%72%2d%70%72%6f%6a%65%63%74%2e%6f%72%67%2f%61%72%63%68%69%76%65%2f%32%30%31%33%2d%31%2f%63%6f%6c%6c%69%6e%67%77%6f%6f%64%2d%6a%75%72%6b%61%2d%62%6f%79%64%73%74%75%6e%2d%65%74%61%6c%2e%70%64%66&amp;ei=JyE3UoDAPMW1iAeml4D4BA&amp;usg=AFQjCNFifONBfB0UkaItfz29s9xprBo_nQ&amp;bvm=bv.52164340,d.dGI" target="_blank" rel="noopener"> RTextTools: A Supervised Learning Package for Text Classification </a> 》一文。 </p>
+</li>
+</ul>
+<p><strong>1. 创建文档-词项矩阵</strong></p>
+<p>影评数据名称为<code>longmen</code>，移除所有的数字和字母，其中一篇影评为英文，被移除，仅处理323篇中文评论。其中用于生成<code>TermDocumentMatrix</code>的列为<code>longmen$word</code>，是影评分词后的词汇集合，可以用<code>create_matrix</code>函数生成<code>TermDocumentMatrix</code>，但是此函数对中文处理可能产生乱码，所有可以换一种处理方式：</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">longmen &lt;- longmen[ nchar(longmen $ word) &gt; <span class="number">0</span> ,]</span><br><span class="line">myReader &lt;- readTabular(mapping = list(Content =  <span class="string">"word"</span> ))  </span><br><span class="line">corpus &lt;- Corpus(DataframeSource(longmen ),  </span><br><span class="line">readerControl = list(reader = myReader ,language =  <span class="string">"zh_cn"</span> ))  </span><br><span class="line">mat &lt;- TermDocumentMatrix(corpus , control = list(wordLengths = c( <span class="number">2</span> , <span class="literal">Inf</span>)))  </span><br><span class="line">mat &lt;- weightTfIdf(mat , normalize = <span class="literal">TRUE</span> )  </span><br><span class="line">mat &lt;- t(removeSparseTerms(mat , sparse = <span class="number">0.99</span> ))  </span><br><span class="line"><span class="comment"># mat2&lt;- create_matrix(longmen$word,removeNumbers=TRUE, stemWords=FALSE,   </span></span><br><span class="line"><span class="comment">#                    weighting=weightTfIdf,removeSparseTerms=.99)</span></span><br></pre></td></tr></table></figure>
+<p>为了降低后面的计算量和内存开销， removeSparseTerms设置为0.99（不一定好） ，保留词汇2660个，实际上有词汇13428个，得到的数据是归一化后的TF-IDF矩阵。</p>
+<p><strong>2. 创建容器（</strong> <strong>Container</strong> <strong>）</strong>  </p>
+<p>使用函数<code>create_container</code>创建一个<code>container</code>，分类标签是评分<code>longmen$rating</code>，前250（约77.4%）行为训练集，剩余的为测试集。<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">container &lt;- create_container(mat ,longmen$rating,trainSize = <span class="number">1</span> : <span class="number">250</span> ,testSize = <span class="number">251</span> : <span class="number">323</span> , virgin = <span class="literal">FALSE</span> )</span><br></pre></td></tr></table></figure></p>
+<p><strong>3. 训练模型</strong></p>
+<p>使用<code>train_model</code>函数对<code>container</code>进行训练，选择其中7种算法，另外两种太吃内存了，破电脑受不了。<code>train_models</code>函数可以一次性选择所有的算法。<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SVM &lt;- train_model(container, <span class="string">"SVM"</span> )  </span><br><span class="line">GLMNET &lt;- train_model(container,<span class="string">"GLMNET"</span> )  </span><br><span class="line">MAXENT &lt;- train_model(container , <span class="string">"MAXENT"</span> )  </span><br><span class="line"><span class="comment"># SLDA &lt;- train_model(container,"SLDA")  </span></span><br><span class="line"><span class="comment"># BAGGING &lt;- train_model(container,"BAGGING")  </span></span><br><span class="line">BOOSTING &lt;- train_model(container,<span class="string">"BOOSTING"</span> )  </span><br><span class="line">RF &lt;- train_model(container , <span class="string">"RF"</span>)  </span><br><span class="line">NNET &lt;- train_model(container , <span class="string">"NNET"</span> )  </span><br><span class="line">TREE &lt;- train_model(container ,<span class="string">'TREE'</span>)</span><br></pre></td></tr></table></figure></p>
+<p><strong>4. 分类</strong><br>对测试集进行分类预测。<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SVM_CLASSIFY &lt;- classify_model(container ,  SVM)  </span><br><span class="line">GLMNET_CLASSIFY &lt;- classify_model(container ,  GLMNET)  </span><br><span class="line">MAXENT_CLASSIFY &lt;- classify_model(container ,  MAXENT)  </span><br><span class="line"><span class="comment"># SLDA_CLASSIFY &lt;- classify_model(container,SLDA)  </span></span><br><span class="line"><span class="comment"># BAGGING_CLASSIFY &lt;- classify_model(container,  BAGGING)  </span></span><br><span class="line">BOOSTING_CLASSIFY &lt;- classify_model(container ,  BOOSTING)  </span><br><span class="line">RF_CLASSIFY &lt;- classify_model(container ,  RF)  </span><br><span class="line">NNET_CLASSIFY &lt;- classify_model(container , NNET)  </span><br><span class="line">TREE_CLASSIFY &lt;- classify_model(container ,  TREE)</span><br></pre></td></tr></table></figure></p>
+<p><strong>5. 分析</strong></p>
+<p>结果解析是机器学习过程非常重要的一步。函数<code>create_analytics</code>帮助我们理解测试集的分类结果，使用<code>summary</code>函数返回四个结果：类标签（<code>label_summary</code>）、算法摘要（<code>algorithm_summary</code>）、文档摘要（<code>document_summary</code>）、集成摘要(<code>ensemble_summary</code>)。算法摘要给出了四个评估指标：<a href="http://en.wikipedia.org/wiki/Precision_and_recall" target="_blank" rel="noopener">精确度(precision),召回率(recall)</a>,<a href="http://en.wikipedia.org/wiki/Accuracy_and_precision" target="_blank" rel="noopener">准确率(accuracy</a> ),<a href="http://en.wikipedia.org/wiki/F-measure" target="_blank" rel="noopener">F-scores</a>。</p>
+<ul>
+<li>accuracy = 正确识别的个体总数/识别出的个体总数：反映了分类器统对整个样本的判定能力——能将正的判定为正，负的判定为负 ；</li>
+<li>precision= 正确识别的个体总数/测试集中存在的个体总数：反映了被分类器判定的正例中真正的正例样本的比重；</li>
+<li>recall = 正确识别的个体总数 / 测试集中存在的个体总数：反映了被正确判定的正例占总的正例的比重；</li>
+<li>F值  =  precision*recall*2 / (precision+ recall)：F1-Measure，综合了precision和recall，平衡二者之间的矛盾，当F1值较高时结果比较理想。</li>
+</ul>
+<p>注意；输出的结果出现NaN时，说明数据集太小，无法给出确定的估计，本文使用的数据集太小，结果很差。</p>
+<p> 类标签摘要汇总了所有类别的一些统计量，包括：</p>
+<ul>
+<li><strong>NUM_MANUALLY_CODED</strong> ：每类包含文档的数量</li>
+<li><strong>NUM_CONSENSUS_CODED</strong> ： the number that were coded using the ensemble method </li>
+<li><strong>NUM_PROBABILITY_CODED</strong> ： the number that were coded using the probability method</li>
+<li><strong>PCT_CONSENSUS_CODED</strong> and <strong>PCT_PROBABILITY_CODED</strong> ： the rate of over- or under-coding with each method </li>
+<li><strong>PCT_CORRECTLY_CODED_CONSENSUS</strong> and <strong>PCT_CORRECTLY_CODED_PROBABILITY</strong> ：  the percentage that were correctly coded using either the ensemble method or the probability  method </li>
+</ul>
+<p>文档摘要给出了每一个算法对每一个文档的分类标签和对应的概率值（<code>doc_summary</code>）。<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">analytics &lt;- create_analytics(container ,cbind(SVM_CLASSIFY , BOOSTING_CLASSIFY ,</span><br><span class="line">           RF_CLASSIFY , GLMNET_CLASSIFY,NNET_CLASSIFY , TREE_CLASSIFY , MAXENT_CLASSIFY))  </span><br><span class="line">summary(analytics)  </span><br><span class="line">topic_summary &lt;- analytics@label_summary  </span><br><span class="line">alg_summary &lt;- analytics@algorithm_summary  </span><br><span class="line">ens_summary &lt;- analytics@ensemble_summary  </span><br><span class="line">doc_summary &lt;- analytics@document_summary  </span><br><span class="line">create_ensembleSummary(analytics@document_summary)</span><br></pre></td></tr></table></figure></p>
+<p><strong> 6. 集成分类一致性(Ensemble Agreement)</strong></p>
+<p>使用集成分类的方法可以提高分类的准确性，通常采用投票的原则，即每一种算法做一次分类，如果多个算法都得到相同的分类结果，就认为这种结果更为可信，也就是少数服从多数的原则。文本分类采用至少四种分类算法的集成，能够达到不错的效果。函数 create_ensembleSummary产生的结果和上述的集成摘要结果相同，返回集成分类的召回率和覆盖度（coverage ）。覆盖度可以理解为满足召回率阈值的文档百分比。覆盖度随着召回率的增大而减小，通常90%的召回率是比较由于价值的结果，如果在不少于4种算法和不太低的覆盖度（个人认为&gt;60%）情况下，这种结果是相当令人满意的。本文的数据集的结果如下，召回率都不令人满意。</p>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>n-ENSEMBLE COVERAGE</th>
+<th>n-ENSEMBLE RECALL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>n&gt;= 1</td>
+<td>1.00</td>
+<td>0.29</td>
+</tr>
+<tr>
+<td>n&gt;= 2</td>
+<td>1.00</td>
+<td>0.29</td>
+</tr>
+<tr>
+<td>n&gt;= 3</td>
+<td>1.00</td>
+<td>0.29</td>
+</tr>
+<tr>
+<td>n&gt;= 4</td>
+<td>0.84</td>
+<td>0.33</td>
+</tr>
+<tr>
+<td>n&gt;= 5</td>
+<td>0.59</td>
+<td>0.35</td>
+</tr>
+<tr>
+<td>n&gt;= 6</td>
+<td>0.25</td>
+<td>0.33</td>
+</tr>
+<tr>
+<td>n&gt;= 7</td>
+<td>0.10</td>
+<td>0.29</td>
+</tr>
+</tbody>
+</table>
+<p><strong>7. 交叉验证(</strong> <strong>Cross Validation)</strong></p>
+<p>可以使用 N-折交叉验证评估算法的准确性（Accuracy）和稳定性，以决定哪些算法可以参与到集成算法中。N-折交叉验证，初始采样分割成N个子样本，一个单独的子样本被保留作为验证模型的数据，其他N-1个样本用来训练。交叉验证重复 N 次，每个子样本验证一次，平均 N 次的结果或者使用其它结合方式，最终得到一个单一估测。这个方法的优势在于，同时重复运用随机产生的子样本进行训练和验证，每次的结果验证一次，10折交叉验证是最常用的。函数<code>cross_validate</code>可以完成此项操作。其中比较靠近1的数字表示在预测方面具有较高的可信度，比较靠近0的数字则表示预测的可信度较低。本文采用的数据集样本数实在太少，选择N=3。<br><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">N = <span class="number">3</span>  </span><br><span class="line">cross_SVM &lt;- cross_validate(container , N , <span class="string">"SVM"</span> )  </span><br><span class="line">cross_GLMNET &lt;- cross_validate(container , N , <span class="string">"GLMNET"</span> )  </span><br><span class="line">cross_MAXENT &lt;- cross_validate(container , N , <span class="string">"MAXENT"</span> )  </span><br><span class="line"><span class="comment"># cross_SLDA &lt;- cross_validate(container,N,"SLDA")  </span></span><br><span class="line"><span class="comment"># cross_BAGGING &lt;- cross_validate(container,N,"BAGGING")  </span></span><br><span class="line">cross_BOOSTING &lt;- cross_validate(container , N , <span class="string">"BOOSTING"</span>)</span><br><span class="line">cross_RF &lt;- cross_validate(container , N , <span class="string">"RF"</span> )  </span><br><span class="line">cross_NNET &lt;- cross_validate(container , N , <span class="string">"NNET"</span> )</span><br><span class="line">cross_TREE &lt;- cross_validate(container , N , <span class="string">"TREE"</span> )</span><br></pre></td></tr></table></figure></p>
+<p>其中最好的两个模型是 MAXENT（0.85）和 GLMNET（0.65）.<br>文本分类（实际上文本挖掘都是如此）是非常消耗计算资源的应用，对于小数据根本没有意义，尤其对BAGGING 、BOOSTING等这类超级复杂度算法，小内存根本无法计算。代码和数据<strong><a href="https://github.com/qxde01/myRproj/tree/master/longmen" target="_blank" rel="noopener">在这里</a></strong>。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/08/24/图像纹理的定义/" rel="next" title="图像纹理的定义">
+                <i class="fa fa-chevron-left"></i> 图像纹理的定义
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/12/19/舆情分析的几个概念/" rel="prev" title="舆情分析的几个概念">
+                舆情分析的几个概念 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://tvax3.sinaimg.cn/crop.2.0.172.172.180/629f6675ly8fuhfq9ayw8j204z04staf.jpg"
+                alt="平行宇宙" />
+            
+              <p class="site-author-name" itemprop="name">平行宇宙</p>
+              <p class="site-description motion-element" itemprop="description">执着的信念,无妄的追求,理性的思索</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/qxde01" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/qxde01" target="_blank" title="weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">平行宇宙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
