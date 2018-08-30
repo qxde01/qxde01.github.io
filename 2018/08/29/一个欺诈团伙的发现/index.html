@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="R,Graph,igraph,cliques,反欺诈,金融,社群发现," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="利用cliques方法，介绍在一个大型网络图中发现欺诈团伙的过程，主要应用场景在金融反欺诈领域。">
+<meta name="keywords" content="R,Graph,igraph,cliques,反欺诈,金融,社群发现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个欺诈团伙的发现">
+<meta property="og:url" content="http://yoursite.com/2018/08/29/一个欺诈团伙的发现/index.html">
+<meta property="og:site_name" content="平行宇宙">
+<meta property="og:description" content="利用cliques方法，介绍在一个大型网络图中发现欺诈团伙的过程，主要应用场景在金融反欺诈领域。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/08/29/一个欺诈团伙的发现/3-clique.png">
+<meta property="og:image" content="http://yoursite.com/2018/08/29/一个欺诈团伙的发现/src-graph.png">
+<meta property="og:image" content="http://yoursite.com/2018/08/29/一个欺诈团伙的发现/52-subgraph.png">
+<meta property="og:image" content="http://yoursite.com/2018/08/29/一个欺诈团伙的发现/tree.png">
+<meta property="og:image" content="http://yoursite.com/2018/08/29/一个欺诈团伙的发现/max-walkstrap.png">
+<meta property="og:image" content="http://yoursite.com/2018/08/29/一个欺诈团伙的发现/spin-eigen.png">
+<meta property="og:image" content="http://yoursite.com/2018/08/29/一个欺诈团伙的发现/communtities.png">
+<meta property="og:updated_time" content="2018-08-30T09:03:13.973Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一个欺诈团伙的发现">
+<meta name="twitter:description" content="利用cliques方法，介绍在一个大型网络图中发现欺诈团伙的过程，主要应用场景在金融反欺诈领域。">
+<meta name="twitter:image" content="http://yoursite.com/2018/08/29/一个欺诈团伙的发现/3-clique.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/29/一个欺诈团伙的发现/"/>
+
+
+
+
+
+  <title>一个欺诈团伙的发现 | 平行宇宙</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d5636d88fa0b83a8216fdd24623a6cf4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">平行宇宙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">网络连接你我,数据衡量现实,计算照亮生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/一个欺诈团伙的发现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="平行宇宙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://tvax3.sinaimg.cn/crop.2.0.172.172.180/629f6675ly8fuhfq9ayw8j204z04staf.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="平行宇宙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">一个欺诈团伙的发现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-29T18:40:39+08:00">
+                2018-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Graph/" itemprop="url" rel="index">
+                    <span itemprop="name">Graph</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>利用cliques方法，介绍在一个大型网络图中发现欺诈团伙的过程，主要应用场景在金融反欺诈领域。<br><a id="more"></a></p>
+</blockquote>
+<h3 id="1-k-Clique"><a href="#1-k-Clique" class="headerlink" title="1 k-Clique"></a>1 <strong>k-Clique</strong></h3><p> <a href="https://en.wikipedia.org/wiki/Clique" target="_blank" rel="noopener">Clique</a>中文称为团或派系，对于一个图G而言，如果其中有一个完全子图（任意两个节点之间均存在边），节点数是k，那么这个完全子图就可称为一个k-clique。3-clique图是一个三角形，两两节点相连。本文将基于3-clique识别小团体网络。<br> <img src="/2018/08/29/一个欺诈团伙的发现/3-clique.png" alt="一个欺诈团伙的发现" title="一个欺诈团伙的发现索--3-clique"><br>另外，经典的最大团问题（Maximum Clique Problem, MCP）是图论中一个组合优化问题，也是一类NP完全问题。</p>
+<h3 id="2-确定关系（边）"><a href="#2-确定关系（边）" class="headerlink" title="2 确定关系（边）"></a>2 <strong>确定关系（边）</strong></h3><p>要解决什么样的问题，用什么样的数据构建一个图，这是首先要明确的问题。比如用通话记录构建一个图，什么样的号码需要保留，外卖和快递小哥的号码要不要保留，这取决于要解决的问题，然后指定清洗策略，数据预处理的过程也就是图数据准备得过程，也是关系确定的过程，一般用sql就可以搞定了。<br>目前运营商的数据是非常容易获取的，可以从许多第三方公司获取，当然需要用户授权和业务绑定。另外，看看手机上安装的app数据采集信息，无论有没有业务相关性，一般都有通信录、通话记录、短信、位置等信息访问，如果禁掉这些权限是就是真的禁掉吗？！</p>
+<h3 id="3-欺诈网络团伙发现"><a href="#3-欺诈网络团伙发现" class="headerlink" title="3 欺诈网络团伙发现"></a>3 <strong>欺诈网络团伙发现</strong></h3><p>原始网络有2万多条边和2万多个节点组成，入下图所示，该网络中有400多个“坏节点”。75%的节点出入度是1，边密度（edge_density）只有0.000102，平均closeness是0.18，整体上是非常稀疏的。<br><img src="/2018/08/29/一个欺诈团伙的发现/src-graph.png" alt="一个欺诈团伙的发现" title="一个欺诈团伙的发现索--原始网络图"><br>使用<code>igraph::cliques</code>函数，发现该网络有295个3-clique，2个4-clique。使用3-clique提取的节点只有671个，只占原网络的3.33%。由3-clique组成的子图中，有52个独立的子图，超过1半的子图是只有3个节点的三角网络，其中最大一个子图有482个节点，包含39个“坏节点”，该子图平均closeness是0.27，关系“亲密”多了。<br><img src="/2018/08/29/一个欺诈团伙的发现/52-subgraph.png" alt="一个欺诈团伙的发现" title="一个欺诈团伙的发现索--cliques网络图"><br>该子网络有个中心节点，是一个大大的“坏节点”，该节点的出入度占整体出入度的10%，有131个一度“好友”关系，“坏节点”有19个，占该网络中坏节点的48.72%，二度“坏节点”占43.60%，是名副其实的“坏网络”，而且是一个大型“坏网络”。<br><img src="/2018/08/29/一个欺诈团伙的发现/tree.png" alt="一个欺诈团伙的发现" title="一个欺诈团伙的发现索--最大子图的树形结构图"></p>
+<h3 id="4-社群发现"><a href="#4-社群发现" class="headerlink" title="4 社群发现"></a>4 <strong>社群发现</strong></h3><p>对原始网络使用社群发现的方法进行聚类，walkstrap可以聚类将近3000个子网络，大多数是小网络；而用spinglass只聚出25个网络，节点数几乎是平均分配的。label propagating方法结果和walkstrap类似，以小网络为主。特征值分解（leading_eigen）方法聚类结果群体并不多，但是大的非常大，小的非常小，非常偏态。<br><img src="/2018/08/29/一个欺诈团伙的发现/max-walkstrap.png" alt="一个欺诈团伙的发现" title="一个欺诈团伙的发现索--walkstrap最大子图"><br><img src="/2018/08/29/一个欺诈团伙的发现/spin-eigen.png" alt="一个欺诈团伙的发现" title="一个欺诈团伙的发现索--spinglass和leading_eigen"></p>
+<h3 id="5-小结"><a href="#5-小结" class="headerlink" title="5 小结"></a>5 <strong>小结</strong></h3><ul>
+<li>Clique方法发现的子图，密度大，节点之间联系紧密，应用上准确率高，但是对于全网络来说，只保留少量的节点，覆盖率低。</li>
+<li>社群发现的方法，不同的算法结果差异很大，基本上可以覆盖所有节点，但准确率相对较低，谨慎选择算法和评估策略。在反欺诈领域，以<a href="https://zh.wikipedia.org/zh-hans/%E5%B0%8F%E4%B8%96%E7%95%8C%E7%B6%B2%E8%B7%AF" target="_blank" rel="noopener">小世界网络</a>应用为主，综合性能和效果，还是walkstrap首选,下表摘自论文。<br><img src="/2018/08/29/一个欺诈团伙的发现/communtities.png" alt="一个欺诈团伙的发现" title="一个欺诈团伙的发现索--社群算法比较"></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/Graph/" rel="tag"># Graph</a>
+          
+            <a href="/tags/igraph/" rel="tag"># igraph</a>
+          
+            <a href="/tags/cliques/" rel="tag"># cliques</a>
+          
+            <a href="/tags/反欺诈/" rel="tag"># 反欺诈</a>
+          
+            <a href="/tags/金融/" rel="tag"># 金融</a>
+          
+            <a href="/tags/社群发现/" rel="tag"># 社群发现</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/27/短文本情感分类探索/" rel="next" title="短文本情感分类探索">
+                <i class="fa fa-chevron-left"></i> 短文本情感分类探索
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://tvax3.sinaimg.cn/crop.2.0.172.172.180/629f6675ly8fuhfq9ayw8j204z04staf.jpg"
+                alt="平行宇宙" />
+            
+              <p class="site-author-name" itemprop="name">平行宇宙</p>
+              <p class="site-description motion-element" itemprop="description">执着的信念,无妄的追求,理性的思索</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/qxde01" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/qxde01" target="_blank" title="weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-k-Clique"><span class="nav-number">1.</span> <span class="nav-text">1 k-Clique</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-确定关系（边）"><span class="nav-number">2.</span> <span class="nav-text">2 确定关系（边）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-欺诈网络团伙发现"><span class="nav-number">3.</span> <span class="nav-text">3 欺诈网络团伙发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-社群发现"><span class="nav-number">4.</span> <span class="nav-text">4 社群发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-小结"><span class="nav-number">5.</span> <span class="nav-text">5 小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">平行宇宙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
