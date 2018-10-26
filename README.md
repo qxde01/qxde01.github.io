@@ -1,8 +1,21 @@
-## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/qxde01/qxde01.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+### 安装前提
+安装 Hexo 相当简单。然而在安装前，您必须检查电脑中是否已安装下列应用程序：
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+> [Node.js](https://nodejs.org/)
+> [Git](https://git-scm.com/)
+
+如果您的电脑中已经安装上述必备程序，那么恭喜您！接下来只需要使用 npm 即可完成 Hexo 的安装。
+`$ npm install -g hexo-cli`
+
+安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。
+```
+$ hexo init <folder>
+$ cd <folder>
+$ npm install
+```
+### hexo 使用
+> [hexo文档](https://hexo.io/zh-cn/docs/commands)
 
 ### Markdown
 
