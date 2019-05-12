@@ -1,9 +1,13 @@
-
 ### 安装前提
 安装 Hexo 相当简单。然而在安装前，您必须检查电脑中是否已安装下列应用程序：
 
 > [Node.js](https://nodejs.org/)
 > [Git](https://git-scm.com/)
+
+### 更改镜像
+在目录..\nodejs\node_modules\npm下找到并编辑npmrc，加入如下字段：
+
+```registry = https://registry.npm.taobao.org```
 
 如果您的电脑中已经安装上述必备程序，那么恭喜您！接下来只需要使用 npm 即可完成 Hexo 的安装。
 
