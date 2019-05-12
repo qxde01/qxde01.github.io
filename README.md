@@ -6,7 +6,8 @@
 > [Git](https://git-scm.com/)
 
 如果您的电脑中已经安装上述必备程序，那么恭喜您！接下来只需要使用 npm 即可完成 Hexo 的安装。
-`$ npm install -g hexo-cli`
+
+```$ npm install -g hexo-cli```
 
 安装 Hexo 完成后，请执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。
 ```
